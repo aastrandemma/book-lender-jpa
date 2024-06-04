@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 
@@ -28,6 +31,9 @@ public class AppUser {
     @OneToOne
     @JoinColumn(name = "details_id")
     @Setter private Details userDetails;
+
+    @OneToMany(mappedBy = "borrower", cascade = CascadeType.ALL)
+    private Set<BookLoan> bookLoans = new HashSet<>();
 
     public AppUser(String username, String password) {
         this.username = username;
