@@ -30,6 +30,8 @@ public class Book {
     @Column(nullable = false)
     private Integer maxLoanDays;
 
+    private boolean isAvailable;
+
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private Set<BookLoan> bookLoans = new HashSet<>();
 
@@ -40,13 +42,16 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.maxLoanDays = maxLoanDays;
+        this.isAvailable = true;
     }
 
-    public void addAuthor(Author author) {
+    public void addAuthorToBook(Author author) {
+        author.getWrittenBooks().add(this);
         authors.add(author);
     }
 
-    public void removeAuthor(Author author) {
-        authors.remove(author);
+    public void removeAuthorFromBook(Author author) {
+       author.getWrittenBooks().remove(this);
+       authors.remove(author);
     }
 }

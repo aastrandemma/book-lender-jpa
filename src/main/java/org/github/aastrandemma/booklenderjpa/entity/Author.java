@@ -33,12 +33,4 @@ public class Author {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
-    public void addBook(Book book) {
-        writtenBooks.add(book);
-    }
-
-    public void removeBook(Book book) {
-        writtenBooks.remove(book);
-    }
 }

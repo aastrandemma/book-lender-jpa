@@ -5,6 +5,7 @@ import org.github.aastrandemma.booklenderjpa.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -26,6 +27,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
     AuthorRepository authorRepository;
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
         Details testDetails = detailsRepository.save(new Details("jane@doe.com", "Jane Doe", LocalDate.of(2000, 1, 1)));
         AppUser testAppuser = appUserRepository.save(new AppUser("test_username", "test_password", testDetails));
@@ -33,8 +35,11 @@ public class MyCommandLineRunner implements CommandLineRunner {
         BookLoan bookLoan = new BookLoan(testAppuser, testBook);
         bookLoanRepository.save(bookLoan);
         Author testAuthor = authorRepository.save(new Author("testFirstName", "testLastName"));
-        testAuthor.addBook(testBook);
-        testBook.addAuthor(testAuthor);
+        testBook.addAuthorToBook(testAuthor);
         authorRepository.save(testAuthor);
+
+        System.out.println(bookLoan.newBookLoanMsg());
+        bookLoan.setDueDate(LocalDate.of(2024, 5, 1));
+        System.out.println(bookLoan.returnBookLoanMsg());
     }
 }
